@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Orbitron', sans-serif;
+}
+
+body{
+    background: #cbd5de;
+}
+
+.container{
+    height: 170px;
+    width: 370px;
+    background: #ebebeb;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    transition: all .2s;
+    box-shadow: rgba(0, 0, 0, 0.1) -4px 9px 25px -6px;
+}
+
+.container .pre-container{
+    height: 100px;
+    width: 320px;
+    background: #dddddd;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    transition: all .2s;
+}
+
+.container .pre-container .time{
+    text-align:center; 
+    color:#000;
+    font-size:35px;
+    margin-top:10px;
+}
+
+.container .pre-container .date{
+    text-align:center;
+    color:#000;
+    font-size:18px;
+}
+
+.container .toggle-btn{
+    all: unset;
+    height: 18px;
+    width: 18px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #272e38;
+    border-radius: 100%;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.footer{
+    align-content: center;
+    text-align: center;
+    padding: 3px;
+    position: absolute;
+    background-color: dimgrey;
+    color: #fff;
+    bottom: 0;  
+    display: block;
+    width: 100%;
+}
+
+.container.dark{
+    background: #272e38;
+    transition: all .2s;
+}
+
+.container.dark .pre-container{
+    background: #0f1620;
+    transition: all .2s;
+}
+
+.container.dark .pre-container .time,
+.container.dark .pre-container .date{
+    color: #fff;
+    text-shadow: 0 0 1px #fff;
+}
