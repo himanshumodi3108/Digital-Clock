@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="clock.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>Digital Clock - Advanced</title>
+</head>
+<body>
+    <div class="container" id="mainContainer">
+        <div class="header-controls">
+            <button class="fullscreen-btn" aria-label="Toggle fullscreen" title="Toggle fullscreen (F)">
+                <i class="fa-solid fa-expand"></i>
+            </button>
+            <button class="settings-btn" aria-label="Open settings" title="Open settings (S)">
+                <i class="fa-solid fa-gear"></i>
+            </button>
+            <button class="toggle-btn" aria-label="Toggle dark mode" title="Toggle dark mode (D)">
+                <i class="fa-regular fa-moon"></i>
+            </button>
+        </div>
+        
+        <div class="pre-container">
+            <h4 class="date">---, ---, ---</h4>  
+            <h3 class="time">00 : 00 : 00 <span class="am-pm">AM</span></h3>
+            <div class="controls">
+                <button class="format-btn" aria-label="Toggle 12/24 hour format" title="Toggle 12/24 hour format">
+                    <i class="fa-solid fa-clock"></i>
+                </button>
+                <button class="seconds-btn" aria-label="Toggle seconds" title="Toggle seconds">
+                    <i class="fa-solid fa-stopwatch"></i>
+                </button>
+                <button class="alarm-btn" aria-label="Toggle alarm" title="Alarm">
+                    <i class="fa-regular fa-bell"></i>
+                </button>
+                <button class="timer-mode-btn" aria-label="Open timer" title="Timer (3)">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="mode-tabs">
+            <button class="mode-tab active" data-mode="clock">Clock</button>
+            <button class="mode-tab" data-mode="stopwatch">Stopwatch</button>
+            <button class="mode-tab" data-mode="timer">Timer</button>
+            <button class="mode-tab" data-mode="pomodoro">Pomodoro</button>
+            <button class="mode-tab" data-mode="timezone">World Clock</button>
+        </div>
+
+        <div class="panel stopwatch-panel" id="stopwatchPanel" style="display: none;">
+            <div class="stopwatch-display">00:00:00</div>
+            <div class="stopwatch-controls">
+                <button class="sw-btn start-btn"><i class="fa-solid fa-play"></i> Start</button>
+                <button class="sw-btn pause-btn"><i class="fa-solid fa-pause"></i> Pause</button>
+                <button class="sw-btn reset-btn"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+            </div>
+            <div class="lap-list" id="lapList"></div>
+        </div>
+
+        <div class="panel timer-panel" id="timerPanel" style="display: none;">
+            <div class="timer-display">00:00:00</div>
+            <div class="timer-inputs">
+                <input type="number" id="timerHours" min="0" max="23" placeholder="H" value="0">
+                <span>:</span>
+                <input type="number" id="timerMinutes" min="0" max="59" placeholder="M" value="0">
+                <span>:</span>
+                <input type="number" id="timerSeconds" min="0" max="59" placeholder="S" value="0">
+            </div>
+            <div class="timer-controls">
+                <button class="timer-btn-start"><i class="fa-solid fa-play"></i> Start</button>
+                <button class="timer-btn-pause"><i class="fa-solid fa-pause"></i> Pause</button>
+                <button class="timer-btn-reset"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+            </div>
+        </div>
+
+        <div class="panel pomodoro-panel" id="pomodoroPanel" style="display: none;">
+            <div class="pomodoro-display">25:00</div>
+            <div class="pomodoro-session">Session 1</div>
+            <div class="pomodoro-controls">
+                <button class="pomo-btn start-btn"><i class="fa-solid fa-play"></i> Start</button>
+                <button class="pomo-btn pause-btn"><i class="fa-solid fa-pause"></i> Pause</button>
+                <button class="pomo-btn reset-btn"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+            </div>
+            <div class="pomodoro-settings">
+                <label>Work: <input type="number" id="pomoWork" min="1" max="60" value="25"> min</label>
+                <label>Break: <input type="number" id="pomoBreak" min="1" max="30" value="5"> min</label>
+            </div>
+        </div>
+
+        <div class="timezone-panel" id="timezonePanel" style="display: none;">
+            <h5>World Clocks</h5>
+            <div class="timezone-list" id="timezoneList"></div>
+            <button class="add-timezone-btn"><i class="fa-solid fa-plus"></i> Add Timezone</button>
+        </div>
+    </div>
+
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Settings</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <h4>Themes</h4>
+                    <div class="theme-selector">
+                        <button class="theme-option" data-theme="light">Light</button>
+                        <button class="theme-option" data-theme="dark">Dark</button>
+                        <button class="theme-option" data-theme="blue">Blue</button>
+                        <button class="theme-option" data-theme="green">Green</button>
+                        <button class="theme-option" data-theme="purple">Purple</button>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <h4>Alarm</h4>
+                    <input type="time" id="alarmTime">
+                    <button class="set-alarm-btn">Set Alarm</button>
+                    <div class="alarm-list" id="alarmList"></div>
+                </div>
+                <div class="setting-group">
+                    <h4>Keyboard Shortcuts</h4>
+                    <ul class="shortcuts-list">
+                        <li><kbd>D</kbd> - Toggle Dark Mode</li>
+                        <li><kbd>S</kbd> - Open Settings</li>
+                        <li><kbd>F</kbd> - Toggle Fullscreen</li>
+                        <li><kbd>1</kbd> - Clock Mode</li>
+                        <li><kbd>2</kbd> - Stopwatch Mode</li>
+                        <li><kbd>3</kbd> - Timer Mode</li>
+                        <li><kbd>4</kbd> - Pomodoro Mode</li>
+                        <li><kbd>5</kbd> - World Clock Mode</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="timezoneModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Timezone</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <select id="timezoneSelect">
+                    <optgroup label="North America">
+                        <option value="America/New_York">New York (EST/EDT)</option>
+                        <option value="America/Chicago">Chicago (CST/CDT)</option>
+                        <option value="America/Denver">Denver (MST/MDT)</option>
+                        <option value="America/Los_Angeles">Los Angeles (PST/PDT)</option>
+                        <option value="America/Toronto">Toronto (EST/EDT)</option>
+                        <option value="America/Vancouver">Vancouver (PST/PDT)</option>
+                    </optgroup>
+                    <optgroup label="Europe">
+                        <option value="Europe/London">London (GMT/BST)</option>
+                        <option value="Europe/Paris">Paris (CET/CEST)</option>
+                        <option value="Europe/Berlin">Berlin (CET/CEST)</option>
+                        <option value="Europe/Rome">Rome (CET/CEST)</option>
+                        <option value="Europe/Madrid">Madrid (CET/CEST)</option>
+                        <option value="Europe/Moscow">Moscow (MSK)</option>
+                    </optgroup>
+                    <optgroup label="Asia">
+                        <option value="Asia/Tokyo">Tokyo (JST)</option>
+                        <option value="Asia/Shanghai">Shanghai (CST)</option>
+                        <option value="Asia/Hong_Kong">Hong Kong (HKT)</option>
+                        <option value="Asia/Singapore">Singapore (SGT)</option>
+                        <option value="Asia/Dubai">Dubai (GST)</option>
+                        <option value="Asia/Kolkata">Mumbai (IST)</option>
+                        <option value="Asia/Seoul">Seoul (KST)</option>
+                    </optgroup>
+                    <optgroup label="Oceania">
+                        <option value="Australia/Sydney">Sydney (AEDT/AEST)</option>
+                        <option value="Australia/Melbourne">Melbourne (AEDT/AEST)</option>
+                        <option value="Pacific/Auckland">Auckland (NZDT/NZST)</option>
+                    </optgroup>
+                    <optgroup label="South America">
+                        <option value="America/Sao_Paulo">São Paulo (BRT/BRST)</option>
+                        <option value="America/Buenos_Aires">Buenos Aires (ART)</option>
+                    </optgroup>
+                </select>
+                <button class="add-timezone-confirm">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal alarm-alert-modal" id="alarmAlertModal">
+        <div class="modal-content alarm-alert-content">
+            <div class="alarm-alert-header">
+                <div class="alarm-icon-animation">
+                    <i class="fa-solid fa-bell"></i>
+                </div>
+                <h2>ALARM!</h2>
+                <div class="alarm-time-display" id="alarmTimeDisplay">00:00</div>
+            </div>
+            <div class="alarm-alert-body">
+                <p>Time to wake up!</p>
+            </div>
+            <div class="alarm-alert-controls">
+                <button class="alarm-snooze-btn">
+                    <i class="fa-solid fa-bed"></i> Snooze (5 min)
+                </button>
+                <button class="alarm-stop-btn">
+                    <i class="fa-solid fa-stop"></i> Stop
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">&copy; 2025 | Himanshu Kumar Modi</div>
+    <script src="clock.js"></script>
+</body>
+</html>
+
